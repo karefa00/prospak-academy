@@ -1,0 +1,17 @@
+/* Prospak Academy Phase 1: Hope UI v5.0.0 integration and small application overrides. */
+body {background: #f5f7fb;}
+.prospak-brand {color: #325bd8; letter-spacing: -.025em; font-weight: 700;}
+.prospak-auth-bg {min-height: 100vh; background: linear-gradient(135deg, #eef2ff 0%, #fff 60%, #f4f8ff 100%);}
+.prospak-auth-card {max-width: 470px; width: 100%; border-radius: 1.15rem; border: 1px solid #edf0f6;}
+.prospak-auth-image {max-width: 100%; width: 88%; max-height: 550px; object-fit: contain;}
+.prospak-main {min-height: 100vh; margin-left: 250px;}
+.prospak-sidebar {width: 250px; min-height: 100vh; position: fixed; top:0; left:0; z-index: 10; background: white; border-right:1px solid #edf0f5;}
+.prospak-sidebar .nav-link {color: #5e6680; padding: .8rem 1rem; border-radius: .6rem;}
+.prospak-sidebar .nav-link.active {background: #eef2ff; color: #325bd8; font-weight: 600;}
+.prospak-header {background: #fff; border-bottom:1px solid #edf0f5; min-height: 74px;}
+.prospak-footnote {font-size:.84rem; color:#76839e;}
+@media(max-width:991px){.prospak-sidebar {position:static;width:100%;min-height:auto;border-right:0;border-bottom:1px solid #edf0f5;} .prospak-main{margin-left:0;min-height:70vh;}}
+
+.prospak-password-card {max-width:650px;}
+
+.prospak-security-card {max-width:760px;}
