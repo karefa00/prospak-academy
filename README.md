@@ -1,6 +1,6 @@
 # Prospak Academy — Student Portal & Grade Management System
 
-**Project status:** Phase 0 accepted by the user. **Phase 1 — Project Foundation and Authentication** implemented on `feature/phase-1-authentication` and awaiting the user's Ubuntu/MySQL manual verification and approval. **Do not begin Phase 2 without explicit approval.**
+**Project status (2026-11-04):** **Phase 0 and Phase 1 accepted by the user. Phase 2 — User, Student and Lecturer Management — implemented on `feature/phase-2-people`, awaiting the user's Ubuntu/MySQL manual testing and acceptance. Do not begin Phase 3 without explicit authorization.**
 
 ## Approved project decisions
 
@@ -12,7 +12,32 @@
 
 ## Technologies
 
-PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepared statements, Apache on Ubuntu, Bootstrap 5, HTML5/CSS3, vanilla JavaScript and selected **Hope UI v5.0.0** distributed assets. No Laravel, no Composer dependencies in Phase 1. Chart.js and Dompdf are reserved for their future approved phases.
+PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepared statements, Apache on Ubuntu, Bootstrap 5, HTML5/CSS3, vanilla JavaScript and selected **Hope UI v5.0.0** distributed assets. No Laravel; no Composer dependencies required through Phase 2. Chart.js and Dompdf are reserved for their future approved phases.
+
+### Phase 2 features — current release
+
+- Administrator-only user creation for all four existing roles; student and lecturer extension profiles. Accounts are administrator-created; no public registration.
+- One-time cryptographically random temporary password, bcrypt hash in database, forced password change on first login. Admin can rotate a user's temporary password without learning their previous secret. Secret is presented only once, for five minutes, via the administrator's authenticated session — share privately, not via Git/logs.
+- User listing with name/email/identifier search, role/status filters, **20-item LIMIT/OFFSET** pagination with bounded page sizes and deterministic ordering; no demo results.
+- Update user/academic person data, suspend/reactivate accounts, role assignment for new accounts and supported administrator↔academic-officer role changes. Student/lecturer role conversions are intentionally blocked to preserve academic history.
+- Student profile: given name, surname, issued matriculation number, phone, optional gender/date of birth/admission year and protected passport photo. Lecturer profile: names, issued staff number, phone, optional designation.
+- Role/record access control: only administrators may manage users or see others' profiles; every authenticated person can read their own profile and (if a student) their own photo.
+- Secure photo upload (validated JPEG/PNG/WebP via `finfo`, content check, 2 MiB cap, random file names, private storage and access-controlled serving). No public uploads directory.
+- Transactional changes, referential and unique constraints, audit events and automatic session invalidation on credentials, status, email or role changes. Existing Phase 1 sign-in and password flows are retained.
+- **Intentionally not Phase 2:** academic faculties, departments, programmes, levels (Phase 3); courses/grades and role-specific real dashboards (later phases). Institute-issued identifiers are entered manually pending an approved numbering policy.
+
+**Phase 2 upgrade from a working Phase 1 database (do not run the full SQL export again):**
+
+```bash
+# Securely back up the database before you migrate; follow docs/phase2-testing.md.
+sudo mysqldump --single-transaction prospak_academy > ~/prospak-before-phase2.sql
+# Deploy the Phase 2 source while preserving .env and private files, then apply ONCE:
+sudo mysql prospak_academy < database/migrations/0002_phase2_people.sql
+# Application database user still needs only SELECT/INSERT/UPDATE/DELETE.
+php tests/phase2_db_readonly.php
+```
+
+**Brand-new empty database:** `sudo mysql < database/student_portal.sql` creates both Phase 1 and Phase 2 tables and seed permissions in order. Use exactly one installation route. **See [Phase 2 Manual Testing Guide](docs/phase2-testing.md)** for 20 numbered browser tests, security/negative tests and safe SQL queries.
 
 ### Phase 1 features
 
@@ -29,7 +54,7 @@ PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepare
 - Prospak-branded Hope UI sign-in/recovery views and basic account landing page (no pretend statistics, student records or courses).
 - Admin-only checkpoint `/admin/security-check` to exercise the RBAC foundation; no user-management interface in this phase.
 
-**Not yet in Phase 1:** User management UI and student/lecturer profiles (Phase 2); departments/programmes (Phase 3); courses and assessments (Phases 4–8); actual role dashboards (Phase 9); notifications, reports or transcripts (Phases 10–12).
+**Historical Phase 1 scope:** Phase 1 introduced authentication; Phase 2 has since added user and student/lecturer management. Departments/programmes remain Phase 3, courses Phases 4–5, grades Phases 6–8, real dashboards Phase 9, notifications/reports/transcripts Phases 10–12.
 
 ## Directory structure
 
@@ -49,7 +74,7 @@ public/index.php           Only HTTP front controller
 public/router.php          Local PHP built-in development router
 public/assets/            Curated Hope UI CSS/JS/image assets + minimal app additions
 database/migrations/       Versioned SQL changes
-database/student_portal.sql Reproducible cumulative schema as of Phase 1
+database/student_portal.sql Reproducible cumulative schema through Phase 2
 database/seeders/          Reference data policy
 storage/logs/              Private logs (never expose through Apache)
 storage/uploads/           Private uploads reserved for Phase 2
@@ -127,11 +152,11 @@ sudo mysql < database/student_portal.sql
 sudo mysql -e 'USE prospak_academy; SHOW TABLES;'
 ```
 
-Do not import `database/student_portal.sql` and `database/migrations/0001_phase1_identity.sql` into the *same* already-initialised database: they contain the same Phase 1 tables. If applying the migration into an empty, pre-created database instead, use `sudo mysql prospak_academy < database/migrations/0001_phase1_identity.sql`.
+Never import the cumulative `database/student_portal.sql` into an existing Phase 1 database. Apply only `0002_phase2_people.sql` after a verified backup. For fresh empty DBs, the cumulative export includes Phase 1 and Phase 2.
 
 ### Database tables in this phase
 
-`roles`, `permissions`, `role_permissions`, `users`, `password_reset_tokens`, `login_attempts`, `audit_logs` (all InnoDB with FK constraints). Role and permission seed values are **reference configuration only**, not institutional student or lecturer data. No default user or password is shipped. The SQL export is cumulative **through Phase 1 only**; future phases will extend it after separate approval.
+`roles`, `permissions`, `role_permissions`, `users`, `password_reset_tokens`, `login_attempts`, `audit_logs` (all InnoDB with FK constraints). Role and permission seed values are **reference configuration only**, not institutional student or lecturer data. No default user or password is shipped. The SQL export is cumulative **through Phase 2**; it additionally creates `students` and `lecturers`, the forced-change flag on `users`, and the administrator-only `users.manage` permission.
 
 ## 3. Bootstrap the first administrator
 
@@ -246,4 +271,36 @@ New repository initiated from the Phase 0 approved baseline with local Git histo
 
 ## 11. Known limitations and next development gate
 
-The source workspace had PHP CLI 8.4.24 but **no MySQL server/client and no `pdo_mysql` extension**, so MySQL migration execution, real login, reset, password changes, RBAC backed by database, and Ubuntu Apache browser tests remain **unverified** here. Apache 2.4.68 was installed but the application was smoke-tested with PHP's built-in server. Actual email delivery remains unverified and disabled by default. No actual user accounts, grades or student data are included. Phase 1 is **awaiting your manual acceptance**. Do not start Phase 2 until the user confirms its tests passed.
+The source workspace had PHP CLI 8.4.24 but **no MySQL server/client and no `pdo_mysql` extension**, so MySQL migration execution, real login, reset, password changes, RBAC backed by database, and Ubuntu Apache browser tests remain **unverified** here. Apache 2.4.68 was installed but the application was smoke-tested with PHP's built-in server. Actual email delivery remains unverified and disabled by default. No actual student or lecturer accounts, grades or transcripts are shipped. Phase 1 has been accepted by the user. Phase 2 real MySQL/account/UI operations remain pending user verification; do not begin Phase 3 without new approval.
+
+
+## Phase 2 routes and permissions
+
+| Route | Methods | Required access |
+|---|---|---|
+| `/admin/users` | GET | Administrator + `users.manage`; searchable/paginated accounts |
+| `/admin/students`, `/admin/lecturers` | GET | Administrator + `users.manage`; filtered account lists |
+| `/admin/users/new` | GET/POST | Administrator + `users.manage`; create user/profile |
+| `/admin/users/view?id=N` | GET | Administrator + `users.manage` |
+| `/admin/users/edit?id=N` | GET | Administrator + `users.manage` |
+| `/admin/users/edit` | POST | Administrator + `users.manage`; update profile |
+| `/admin/users/status` | POST | Administrator + `users.manage`; suspend/reactivate |
+| `/admin/users/temporary-password` | POST | Administrator + `users.manage`; new one-time password |
+| `/admin/users/photo` | POST | Administrator + `users.manage`; private student photo upload |
+| `/profile` | GET | Authenticated owner with `dashboard.view` |
+| `/student-photo?id=N` | GET | Administrator or the student record owner |
+
+POST routes require global CSRF tokens. All photo bytes are stored under `storage/uploads/student_photos` outside `public/`, which must be writable by the PHP web worker. The 2 MiB upload limit is independent of PHP's higher `upload_max_filesize` and `post_max_size` settings.
+
+## Phase 2 quality gates and Git
+
+```bash
+find app bootstrap config routes templates public scripts tests -name '*.php' -print0 | xargs -0 -n1 php -l
+php tests/phase1_unit.php             # 25 non-DB assertions
+python3 tests/static_checks.py       # Phase 1 static checks
+php tests/phase2_unit.php            # Phase 2 non-DB assertions
+python3 tests/phase2_static.py       # static SQL, routing, asset checks
+php tests/phase2_db_readonly.php     # requires working Phase 2 MySQL
+```
+
+Read `docs/phase2-preparation.md` for dependencies and `docs/phase2-report.md` for actual test evidence and limitations. Development branch: `feature/phase-2-people`. A GitHub push requires your configured remote and authorization.

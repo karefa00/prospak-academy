@@ -6,6 +6,9 @@ use Prospak\Core\View;
 <div class="card shadow-sm prospak-password-card">
  <div class="card-header"><h2 class="h5 mb-0">Account security</h2></div>
  <div class="card-body">
+  <?php if ((int) ($user['must_change_password'] ?? 0) === 1): ?>
+  <div class="alert alert-warning">Your administrator issued a temporary password. You must set your own password before opening the portal.</div>
+  <?php endif; ?>
   <p class="text-muted">Changing your password invalidates your other signed-in sessions.</p>
   <?php require dirname(__DIR__) . '/components/alerts.php'; ?>
   <form method="post" action="<?= View::escape(Config::url('/change-password')) ?>">

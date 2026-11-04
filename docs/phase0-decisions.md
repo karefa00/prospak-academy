@@ -9,3 +9,7 @@
 - Phase 1 only is authorised. Phase 2 and later require a new explicit instruction after manual testing.
 
 The full Phase 0 inspection report is a separate user-provided project artifact, not replicated in this source package.
+
+## Updated acceptance (2026-11-04)
+- User confirmed Phase 1 manual testing passed and explicitly authorized Phase 2.
+- Phase 2 is in implementation/review; awaiting Phase 2 manual tests. Phase 3 remains unauthorized.

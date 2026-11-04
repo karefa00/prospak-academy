@@ -18,7 +18,7 @@ final class UsersRepository
 
     public function byId(int $userId): ?array
     {
-        $query = $this->pdo->prepare('SELECT u.id, u.email, u.full_name, u.role_id, u.account_status, u.session_version, r.slug AS role_slug FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id = :id LIMIT 1');
+        $query = $this->pdo->prepare('SELECT u.id, u.email, u.full_name, u.role_id, u.account_status, u.must_change_password, u.session_version, r.slug AS role_slug FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id = :id LIMIT 1');
         $query->execute(['id' => $userId]);
         return $query->fetch() ?: null;
     }

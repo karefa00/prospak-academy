@@ -13,3 +13,18 @@ $router->get('/', static function (): void {
 });
 $router->get('/dashboard', [$portalController, 'dashboard']);
 $router->get('/admin/security-check', [$portalController, 'adminSecurity']);
+
+/** Phase 2: administrator-only account management and read-only self-profile. */
+$router->get('/admin/users', [$peopleController, 'index']);
+$router->get('/admin/students', [$peopleController, 'students']);
+$router->get('/admin/lecturers', [$peopleController, 'lecturers']);
+$router->get('/admin/users/new', [$peopleController, 'new']);
+$router->post('/admin/users/new', [$peopleController, 'create']);
+$router->get('/admin/users/view', [$peopleController, 'show']);
+$router->get('/admin/users/edit', [$peopleController, 'edit']);
+$router->post('/admin/users/edit', [$peopleController, 'update']);
+$router->post('/admin/users/status', [$peopleController, 'status']);
+$router->post('/admin/users/temporary-password', [$peopleController, 'temporaryPassword']);
+$router->post('/admin/users/photo', [$peopleController, 'uploadPhoto']);
+$router->get('/profile', [$peopleController, 'profile']);
+$router->get('/student-photo', [$peopleController, 'photo']);

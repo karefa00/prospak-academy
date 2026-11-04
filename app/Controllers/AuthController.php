@@ -33,7 +33,8 @@ final class AuthController
         }
         $result = $this->auth->login($email, $password, (string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
         if ($result === 'ok') {
-            self::redirect('/dashboard');
+            $loggedIn = $this->auth->user();
+            self::redirect((int) ($loggedIn['must_change_password'] ?? 0) === 1 ? '/change-password' : '/dashboard');
         }
         http_response_code($result === 'throttled' ? 429 : 422);
         View::render('auth/login', ['title' => 'Sign in', 'error' => $result === 'throttled'

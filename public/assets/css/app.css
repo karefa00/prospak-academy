@@ -1,4 +1,4 @@
-/* Prospak Academy Phase 1: Hope UI v5.0.0 integration and small application overrides. */
+/* Prospak Academy Phase 1–2: Hope UI v5.0.0 integration and small application overrides. */
 body {background: #f5f7fb;}
 .prospak-brand {color: #325bd8; letter-spacing: -.025em; font-weight: 700;}
 .prospak-auth-bg {min-height: 100vh; background: linear-gradient(135deg, #eef2ff 0%, #fff 60%, #f4f8ff 100%);}
@@ -15,3 +15,11 @@ body {background: #f5f7fb;}
 .prospak-password-card {max-width:650px;}
 
 .prospak-security-card {max-width:760px;}
+
+.prospak-content-card {max-width:1200px;}
+.prospak-table td {vertical-align:middle;}
+.prospak-passport {width:126px;height:145px;object-fit:cover;border:1px solid #dde4ef;border-radius:.65rem;}
+.prospak-credential {font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere;}
+.prospak-form-help {font-size:.84rem;color:#69778a;}
+/* Browsers must hide role-specific rows even when Bootstrap's .row has display:flex. */
+[data-for-role][hidden] { display: none !important; }

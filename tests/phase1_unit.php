@@ -85,7 +85,7 @@ View::render('portal/home', ['title' => 'Test', 'user' => [
 ]], 'portal');
 $html = ob_get_clean();
 check(str_contains($html, '&lt;script&gt;alert(1)&lt;/script&gt;') && !str_contains($html, '<script>alert(1)</script>'), 'portal escapes user-supplied content');
-check(str_contains($html, 'Prospak Academy') && str_contains($html, 'Phase 1'), 'portal uses Prospak Academy/Phase 1 copy');
+check(str_contains($html, 'Prospak Academy') && str_contains($html, 'Phase 2'), 'portal uses Prospak Academy/current phase copy');
 
 echo "SUCCESS: $checks non-database unit checks passed.\n";
 ob_end_flush();

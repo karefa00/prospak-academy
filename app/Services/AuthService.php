@@ -114,7 +114,7 @@ final class AuthService
                 $pdo->rollBack();
                 return false;
             }
-            $update = $pdo->prepare('UPDATE users SET password_hash = :hash, session_version = session_version + 1 WHERE id = :id');
+            $update = $pdo->prepare('UPDATE users SET password_hash = :hash, must_change_password = 0, session_version = session_version + 1 WHERE id = :id');
             $update->execute(['hash' => password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]), 'id' => $userId]);
             $delete = $pdo->prepare('DELETE FROM password_reset_tokens WHERE user_id = :id');
             $delete->execute(['id' => $userId]);
@@ -197,7 +197,7 @@ final class AuthService
                 $pdo->rollBack();
                 return false;
             }
-            $update = $pdo->prepare('UPDATE users SET password_hash = :hash, session_version = session_version + 1 WHERE id = :id');
+            $update = $pdo->prepare('UPDATE users SET password_hash = :hash, must_change_password = 0, session_version = session_version + 1 WHERE id = :id');
             $update->execute(['hash' => password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]), 'id' => $token['user_id']]);
             $delete = $pdo->prepare('DELETE FROM password_reset_tokens WHERE user_id = :id');
             $delete->execute(['id' => $token['user_id']]);

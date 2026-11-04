@@ -7,6 +7,9 @@
 !/storage/logs/.gitkeep
 /storage/uploads/*
 !/storage/uploads/.gitkeep
+!/storage/uploads/student_photos/
+/storage/uploads/student_photos/*
+!/storage/uploads/student_photos/.gitkeep
 /.phpunit.cache/
 /.idea/
 /.vscode/
