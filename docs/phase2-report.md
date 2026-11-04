@@ -93,7 +93,7 @@ Follow **`docs/phase2-testing.md`**: prerequisites, safe migration/backup, five 
 
 - Based on user's accepted Phase 1 branch `feature/phase-1-authentication` commit `b14ef5b`.
 - Phase 2 working branch: **`feature/phase-2-people`**.
-- Local commits are included in packaged repository (see `git log --oneline --max-count=5`). No GitHub remote was configured or pushed.
+- Implementation commit: `c559d8d` (`feat(people): implement Phase 2 administrator-managed accounts and profiles`). The packaged repository includes the complete branch history (see `git log --oneline --max-count=5`). No GitHub remote was configured or pushed.
 
 ## 10. Phase tracking
 
