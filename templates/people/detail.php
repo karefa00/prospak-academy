@@ -24,6 +24,7 @@ $lecturer = $person['role_slug'] === 'lecturer';
   <div class="col-lg-7"><div class="card shadow-sm h-100"><div class="card-body p-4">
    <h3 class="h5 mb-4">Profile details</h3>
    <?php if($student && $person['passport_filename']): ?><img class="prospak-passport mb-3" alt="Student passport photo" src="<?= View::escape(Config::url('/student-photo') . '?id=' . (int) $person['id']) ?>"><?php endif; ?>
+   <?php if ($canManage && ($student || $lecturer)): ?><a class="btn btn-outline-primary btn-sm mb-3" href="<?= View::escape(Config::url('/academics/placement').'?id='.(int)$person['id']) ?>">Assign academic placement</a><?php endif; ?>
    <dl class="row">
     <dt class="col-sm-5">Account ID</dt><dd class="col-sm-7"><?= (int)$person['id'] ?></dd>
     <dt class="col-sm-5">Role</dt><dd class="col-sm-7"><?= View::escape($person['role_label']) ?></dd>
@@ -35,11 +36,17 @@ $lecturer = $person['role_slug'] === 'lecturer';
      <dt class="col-sm-5">Gender</dt><dd class="col-sm-7"><?= View::escape($person['gender'] ? str_replace('_',' ',$person['gender']) : 'Not recorded') ?></dd>
      <dt class="col-sm-5">Date of birth</dt><dd class="col-sm-7"><?= View::escape($person['date_of_birth'] ?? '—') ?></dd>
      <dt class="col-sm-5">Admission year</dt><dd class="col-sm-7"><?= View::escape($person['admission_year'] ?? '—') ?></dd>
+     <dt class="col-sm-5">Faculty</dt><dd class="col-sm-7"><?= View::escape($person['student_faculty_name']??'Unassigned') ?></dd>
+     <dt class="col-sm-5">Department</dt><dd class="col-sm-7"><?= View::escape($person['student_department_name']??'Unassigned') ?></dd>
+     <dt class="col-sm-5">Programme</dt><dd class="col-sm-7"><?= View::escape($person['programme_name']??'Unassigned') ?></dd>
+     <dt class="col-sm-5">Academic level</dt><dd class="col-sm-7"><?= View::escape($person['academic_level_name']??'Unassigned') ?></dd>
     <?php elseif($lecturer): ?>
      <dt class="col-sm-5">Staff number</dt><dd class="col-sm-7"><?= View::escape($person['staff_number']) ?></dd>
      <dt class="col-sm-5">Name</dt><dd class="col-sm-7"><?= View::escape($person['lecturer_first_name'] . ' ' . $person['lecturer_last_name']) ?></dd>
      <dt class="col-sm-5">Phone</dt><dd class="col-sm-7"><?= View::escape($person['lecturer_phone'] ?? '—') ?></dd>
      <dt class="col-sm-5">Designation</dt><dd class="col-sm-7"><?= View::escape($person['designation'] ?? '—') ?></dd>
+     <dt class="col-sm-5">Faculty</dt><dd class="col-sm-7"><?= View::escape($person['lecturer_faculty_name']??'Unassigned') ?></dd>
+     <dt class="col-sm-5">Department</dt><dd class="col-sm-7"><?= View::escape($person['lecturer_department_name']??'Unassigned') ?></dd>
     <?php endif; ?>
     <dt class="col-sm-5">Status</dt><dd class="col-sm-7"><?= View::escape(ucfirst($person['account_status'])) ?></dd>
     <dt class="col-sm-5">Password setup</dt><dd class="col-sm-7"><?= (int)$person['must_change_password']===1 ? 'First login change required':'Completed' ?></dd>

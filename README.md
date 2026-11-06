@@ -1,6 +1,6 @@
 # Prospak Academy — Student Portal & Grade Management System
 
-**Project status (2026-11-04):** **Phase 0 and Phase 1 accepted by the user. Phase 2 — User, Student and Lecturer Management — implemented on `feature/phase-2-people`, awaiting the user's Ubuntu/MySQL manual testing and acceptance. Do not begin Phase 3 without explicit authorization.**
+**Project status (2026-11-06):** **Phases 0–2 accepted by the user. Phase 3 — Academic Organisation Management — implemented on `feature/phase-3-academic-organisation`; awaiting the user's Ubuntu/MySQL manual testing and acceptance. Do not begin Phase 4 without explicit authorization.**
 
 ## Approved project decisions
 
@@ -12,9 +12,31 @@
 
 ## Technologies
 
-PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepared statements, Apache on Ubuntu, Bootstrap 5, HTML5/CSS3, vanilla JavaScript and selected **Hope UI v5.0.0** distributed assets. No Laravel; no Composer dependencies required through Phase 2. Chart.js and Dompdf are reserved for their future approved phases.
+PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepared statements, Apache on Ubuntu, Bootstrap 5, HTML5/CSS3, vanilla JavaScript and selected **Hope UI v5.0.0** distributed assets. No Laravel; no Composer dependencies required through Phase 3. Chart.js and Dompdf are reserved for their future approved phases.
 
-### Phase 2 features — current release
+### Phase 3 features — current release
+
+- Administrator can create, search, edit and inactivate **faculties, departments, programmes and academic levels** using the selected Hope UI layouts. Academic officers can view, but not modify, academic organisation.
+- Normalized hierarchy: faculty -> department -> programme. Global academic-level definitions remain administrator-configured (no fabricated official institutional policies or seed data).
+- Student profiles can be assigned a programme and level; faculty/department are resolved through the programme. Lecturer profiles can be assigned a primary department. Unassigned Phase 2 identities remain valid.
+- Read-only, paginated associated-student lists per faculty, department, programme and level. Academic labels appear in individual authorized user profiles.
+- Server-side validation, PDO prepared statements, CSRF, role-based permissions, transactions, audit entries and FK/UNIQUE/CHECK constraints. No hard-delete endpoints; preserve assigned records.
+- 4 new academic tables, 3 nullable placement columns, 2 permissions, separate incremental migration `database/migrations/0003_phase3_academics.sql`.
+
+**Upgrade from a working and accepted Phase 2 installation:** Back up the database and source, update to the Phase 3 feature branch / package, preserve `.env` and private `storage/`, and apply only the migration below **once**:
+
+```bash
+sudo mysqldump --single-transaction prospak_academy > ~/prospak-before-phase3.sql
+sudo mysql prospak_academy < database/migrations/0003_phase3_academics.sql
+php tests/phase3_db_readonly.php
+```
+
+**Never rerun** `database/student_portal.sql` in a previously populated database. That file is only for a fresh empty installation and now includes Phases 1–3 cumulatively. For the exact safe upgrade, 20 numbered manual tests, negative cases and SQL checks, see **[Phase 3 testing guide](docs/phase3-testing.md)** and **[Phase 3 report](docs/phase3-report.md)**.
+
+**Not Phase 3:** academic sessions/semesters/courses (Phase 4), lecturer assignments/course registration (Phase 5), grading and GPA (Phases 6–8), true dashboards and reports (later phases).
+
+### Phase 2 features — completed and user-accepted
+
 
 - Administrator-only user creation for all four existing roles; student and lecturer extension profiles. Accounts are administrator-created; no public registration.
 - One-time cryptographically random temporary password, bcrypt hash in database, forced password change on first login. Admin can rotate a user's temporary password without learning their previous secret. Secret is presented only once, for five minutes, via the administrator's authenticated session — share privately, not via Git/logs.
@@ -26,7 +48,7 @@ PHP 8.x (tested here with PHP 8.4.24), MySQL 8.x with InnoDB, native PDO prepare
 - Transactional changes, referential and unique constraints, audit events and automatic session invalidation on credentials, status, email or role changes. Existing Phase 1 sign-in and password flows are retained.
 - **Intentionally not Phase 2:** academic faculties, departments, programmes, levels (Phase 3); courses/grades and role-specific real dashboards (later phases). Institute-issued identifiers are entered manually pending an approved numbering policy.
 
-**Phase 2 upgrade from a working Phase 1 database (do not run the full SQL export again):**
+**Historical Phase 2 upgrade from a working Phase 1 database (do not run the full SQL export again):**
 
 ```bash
 # Securely back up the database before you migrate; follow docs/phase2-testing.md.
@@ -37,9 +59,9 @@ sudo mysql prospak_academy < database/migrations/0002_phase2_people.sql
 php tests/phase2_db_readonly.php
 ```
 
-**Brand-new empty database:** `sudo mysql < database/student_portal.sql` creates both Phase 1 and Phase 2 tables and seed permissions in order. Use exactly one installation route. **See [Phase 2 Manual Testing Guide](docs/phase2-testing.md)** for 20 numbered browser tests, security/negative tests and safe SQL queries.
+**Brand-new empty database:** `sudo mysql < database/student_portal.sql` creates Phase 1, Phase 2 and Phase 3 tables and seed permissions in order. Use exactly one installation route. **See [Phase 2 Manual Testing Guide](docs/phase2-testing.md)** for 20 numbered browser tests, security/negative tests and safe SQL queries.
 
-### Phase 1 features
+### Phase 1 features (completed and user-accepted)
 
 - Project bootstrap, simple method+path router, front controller and configurable Apache virtual host.
 - Secure central MySQL PDO connection (`utf8mb4`, exception mode, native prepares, UTC SQL session).

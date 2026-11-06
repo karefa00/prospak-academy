@@ -10,6 +10,8 @@ use Prospak\Services\AuthService;
 use Prospak\Controllers\AuthController;
 use Prospak\Controllers\PortalController;
 use Prospak\Controllers\PeopleController;
+use Prospak\Controllers\AcademicController;
+use Prospak\Services\AcademicService;
 use Prospak\Services\PeopleService;
 
 require dirname(__DIR__) . '/bootstrap/app.php';
@@ -35,6 +37,7 @@ try {
     $authController = new AuthController($auth);
     $portalController = new PortalController($auth);
     $peopleController = new PeopleController($auth, new PeopleService($db));
+    $academicController = new AcademicController($auth, new AcademicService($db));
     $router = new Router();
     require dirname(__DIR__) . '/routes/auth.php';
     require dirname(__DIR__) . '/routes/web.php';

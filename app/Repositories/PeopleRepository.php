@@ -17,13 +17,22 @@ SELECT u.id, u.full_name, u.email, u.role_id, u.account_status, u.must_change_pa
        r.slug AS role_slug, r.display_name AS role_label,
        s.id AS student_id, s.matriculation_number, s.first_name AS student_first_name,
        s.last_name AS student_last_name, s.phone AS student_phone, s.gender, s.date_of_birth,
-       s.admission_year, s.passport_filename,
+       s.admission_year, s.passport_filename, s.programme_id, s.academic_level_id,
+       p.name AS programme_name, p.code AS programme_code, sd.name AS student_department_name,
+       f.name AS student_faculty_name, al.name AS academic_level_name, al.code AS academic_level_code,
        l.id AS lecturer_id, l.staff_number, l.first_name AS lecturer_first_name,
-       l.last_name AS lecturer_last_name, l.phone AS lecturer_phone, l.designation
+       l.last_name AS lecturer_last_name, l.phone AS lecturer_phone, l.designation,
+       l.department_id AS lecturer_department_id, ld.name AS lecturer_department_name, lf.name AS lecturer_faculty_name
 FROM users u
 JOIN roles r ON r.id = u.role_id
 LEFT JOIN students s ON s.user_id = u.id
 LEFT JOIN lecturers l ON l.user_id = u.id
+LEFT JOIN programmes p ON p.id=s.programme_id
+LEFT JOIN departments sd ON sd.id=p.department_id
+LEFT JOIN faculties f ON f.id=sd.faculty_id
+LEFT JOIN academic_levels al ON al.id=s.academic_level_id
+LEFT JOIN departments ld ON ld.id=l.department_id
+LEFT JOIN faculties lf ON lf.id=ld.faculty_id
 WHERE u.id = :id LIMIT 1
 SQL);
         $stmt->execute(['id' => $id]);

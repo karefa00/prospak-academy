@@ -28,3 +28,13 @@ $router->post('/admin/users/temporary-password', [$peopleController, 'temporaryP
 $router->post('/admin/users/photo', [$peopleController, 'uploadPhoto']);
 $router->get('/profile', [$peopleController, 'profile']);
 $router->get('/student-photo', [$peopleController, 'photo']);
+
+/** Phase 3: academic organisation; admin edits, academic officer read-only. */
+foreach (\Prospak\Core\AcademicValidation::ENTITIES as $entity) {
+    $router->get('/academics/'.$entity, static fn () => $academicController->index($entity));
+    $router->get('/academics/'.$entity.'/form', static fn () => $academicController->form($entity));
+    $router->post('/academics/'.$entity.'/save', static fn () => $academicController->save($entity));
+}
+$router->get('/academics/students', [$academicController, 'students']);
+$router->get('/academics/placement', [$academicController, 'placement']);
+$router->post('/academics/placement', [$academicController, 'savePlacement']);

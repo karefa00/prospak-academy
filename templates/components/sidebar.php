@@ -19,6 +19,12 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
   <a class="nav-link <?= $currentPath === Config::url('/admin/students') ? 'active' : '' ?>" href="<?= View::escape(Config::url('/admin/students')) ?>">Students</a>
   <a class="nav-link <?= $currentPath === Config::url('/admin/lecturers') ? 'active' : '' ?>" href="<?= View::escape(Config::url('/admin/lecturers')) ?>">Lecturers</a>
   <?php endif; ?>
+  <?php if (in_array(($user['role_slug'] ?? ''), ['administrator','academic_officer'], true) && (int)($user['must_change_password']??0)===0): ?>
+  <p class="small text-uppercase text-muted fw-bold mt-3">Academic organisation</p>
+  <a class="nav-link <?= str_contains($currentPath,'/academics/') ? 'active':'' ?>" href="<?= View::escape(Config::url('/academics/faculties')) ?>">Faculties &amp; departments</a>
+  <a class="nav-link" href="<?= View::escape(Config::url('/academics/programmes')) ?>">Programmes</a>
+  <a class="nav-link" href="<?= View::escape(Config::url('/academics/levels')) ?>">Academic levels</a>
+  <?php endif; ?>
   <?php if ((int) ($user['must_change_password'] ?? 0) === 0): ?>
   <a class="nav-link <?= $currentPath === Config::url('/profile') ? 'active' : '' ?>" href="<?= View::escape(Config::url('/profile')) ?>">My profile</a>
   <?php endif; ?>
@@ -29,5 +35,5 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
   <input type="hidden" name="_csrf" value="<?= View::escape(Csrf::token()) ?>">
   <button type="submit" class="btn btn-outline-secondary w-100">Sign out</button>
  </form>
- <p class="prospak-footnote mt-4">Phase 2 · Account &amp; profile management</p>
+ <p class="prospak-footnote mt-4">Phase 3 · Academic organisation</p>
 </aside>
