@@ -1,0 +1,19 @@
+<?php
+$label=['faculty'=>'Faculty','department'=>'Department','programme'=>'Programme','level'=>'Academic level','session'=>'Academic session','semester'=>'Semester'][$entity];
+$val=static fn(string $key):string=>e($record[$key]??'');
+?>
+<div class="page-header"><div><p class="eyebrow">ACADEMIC CONFIGURATION</p><h1>Edit <?= e($label) ?></h1><p>Update the existing record; dependent records are protected from unsafe structural changes.</p></div><a href="/settings/academics" class="btn btn-outline-secondary">Back to settings</a></div>
+<section class="panel"><form method="post" action="/settings/academics" data-validate><?= csrf_field() ?><input type="hidden" name="action" value="update"><input type="hidden" name="entity" value="<?= e($entity) ?>"><input type="hidden" name="id" value="<?= (int)$record['id'] ?>"><div class="form-grid">
+<?php if(in_array($entity,['faculty','department','programme','level'],true)):?>
+<label class="form-label">Code<input class="form-control" name="code" maxlength="<?= $entity==='programme'?30:20 ?>" required value="<?= $val('code') ?>"></label>
+<label class="form-label">Name<input class="form-control" name="name" maxlength="150" required value="<?= $val('name') ?>"></label>
+<?php if($entity==='department'):?><label class="form-label">Faculty<select class="form-select" name="faculty_id" required><?php foreach($faculties as $r):?><option value="<?= (int)$r['id'] ?>" <?= (int)$record['faculty_id']===(int)$r['id']?'selected':'' ?>><?= e($r['name']) ?></option><?php endforeach;?></select></label><?php endif;?>
+<?php if($entity==='programme'):?><label class="form-label">Department<select class="form-select" name="department_id" required><?php foreach($departments as $r):?><option value="<?= (int)$r['id'] ?>" <?= (int)$record['department_id']===(int)$r['id']?'selected':'' ?>><?= e($r['name']) ?></option><?php endforeach;?></select></label><?php endif;?>
+<?php if($entity==='level'):?><label class="form-label">Sort order<input class="form-control" type="number" name="sort_order" min="1" max="65535" required value="<?= (int)$record['sort_order'] ?>"></label><?php endif;?>
+<?php endif;?>
+<?php if($entity==='session'):?><label class="form-label">Academic session<input class="form-control" name="name" maxlength="9" required value="<?= $val('name') ?>"></label><?php endif;?>
+<?php if($entity==='semester'):?><label class="form-label">Academic session<select class="form-select" name="academic_session_id" required><?php foreach($sessions as $r):?><option value="<?= (int)$r['id'] ?>" <?= (int)$record['academic_session_id']===(int)$r['id']?'selected':'' ?>><?= e($r['name']) ?></option><?php endforeach;?></select></label><label class="form-label">Semester<select class="form-select" name="semester_number"><option value="1" <?= (int)$record['semester_number']===1?'selected':'' ?>>First</option><option value="2" <?= (int)$record['semester_number']===2?'selected':'' ?>>Second</option></select></label><?php endif;?>
+<?php if(in_array($entity,['session','semester'],true)):?>
+<?php foreach(['starts_on'=>'Starts on','ends_on'=>'Ends on','registration_deadline'=>'Registration deadline','exam_starts_on'=>'Examination starts','exam_ends_on'=>'Examination ends'] as $key=>$caption):?><label class="form-label"><?= e($caption) ?><input class="form-control" type="date" name="<?= e($key) ?>" value="<?= $val($key) ?>" <?= in_array($key,['starts_on','ends_on'],true)?'required':'' ?>></label><?php endforeach;?>
+<?php if($entity==='semester'):?><?php foreach(['grading_starts_on'=>'Grading starts','grading_ends_on'=>'Grading ends'] as $key=>$caption):?><label class="form-label"><?= e($caption) ?><input class="form-control" type="date" name="<?= e($key) ?>" value="<?= $val($key) ?>"></label><?php endforeach;?><?php endif;?>
+<?php endif;?></div><button class="btn btn-primary mt-3" type="submit">Save <?= e($label) ?></button></form></section>

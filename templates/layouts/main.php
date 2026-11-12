@@ -1,0 +1,1 @@
+<?php require PROJECT_ROOT.'/includes/header.php'; ?><main class="error-page"><div class="error-card"><a href="/dashboard" class="brand-lockup"><span class="brand-mark">PA</span><span>Prospak Academy</span></a><?= $content ?><a href="/dashboard" class="btn btn-primary">Go to dashboard</a></div></main></body></html>

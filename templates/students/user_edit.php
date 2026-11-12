@@ -1,0 +1,8 @@
+<div class="page-header"><div><p class="eyebrow">USER MANAGEMENT</p><h1>Edit staff account</h1><p>Update contact details without changing the account's permission role.</p></div><a href="/users" class="btn btn-outline-secondary">Back to users</a></div>
+<section class="panel"><p><strong>Role:</strong> <?= e(ucwords(str_replace('_',' ',$record['role_slug']))) ?> <span class="status-pill <?= $record['account_status']==='active'?'active':'inactive' ?>"><?= e($record['account_status']) ?></span></p>
+<form action="/users/update" method="post" data-validate><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int)$record['id'] ?>"><div class="form-grid">
+<label class="form-label">Full name<input class="form-control" name="full_name" maxlength="150" required value="<?= e($record['full_name']) ?>"></label>
+<label class="form-label">Email<input type="email" class="form-control" name="email" maxlength="254" required value="<?= e($record['email']) ?>"></label>
+<?php if($lecturer):?><label class="form-label">Staff number<input class="form-control" name="staff_number" maxlength="40" required value="<?= e($lecturer['staff_number']) ?>"></label>
+<label class="form-label">Department<select class="form-select" name="department_id" required><?php foreach($departments as $r):?><option value="<?= (int)$r['id'] ?>" <?= (int)$r['id']===(int)$lecturer['department_id']?'selected':'' ?> <?= $r['status']!=='active'?'disabled':'' ?>><?= e($r['name']) ?><?= $r['status']!=='active'?' (inactive)':'' ?></option><?php endforeach; ?></select></label><?php endif; ?></div>
+<button type="submit" class="btn btn-primary mt-3">Save changes</button></form></section>

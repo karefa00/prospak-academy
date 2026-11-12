@@ -1,0 +1,1 @@
+<h1>Request could not be completed</h1><p><?= e($message??'Please verify the input.') ?></p>

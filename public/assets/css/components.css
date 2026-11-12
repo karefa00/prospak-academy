@@ -1,0 +1,9 @@
+ .auth-page{display:flex;min-height:100vh;background:#fff}.auth-art{width:48%;background:linear-gradient(0deg,#122653c7,#0d255d2a),url('/assets/images/auth-01.png') center/cover;display:flex;align-items:flex-end;position:relative}.auth-art-overlay{padding:65px 9%;color:white}.auth-art-overlay .eyebrow{color:#dce7ff}.auth-art h1{font-size:clamp(2.4rem,5vw,4.5rem);color:#fff;line-height:1.08;font-weight:850}.auth-art p{font-size:1rem;color:#e5eefd}.auth-panel{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6% min(7%,100px)}.auth-logo{display:flex;align-items:center;gap:12px;font-size:1.03rem;color:#26417d;font-weight:800;margin-bottom:50px}.auth-form{max-width:450px;width:100%;margin:0 auto}.auth-form h2{font-size:2rem;margin-bottom:10px}.auth-form p{color:#8c99b0;margin-bottom:27px}.auth-form label{color:#445575}.auth-note{margin-top:30px;font-size:.8rem;color:#98a2b5;text-align:center}.password-wrap{position:relative}.password-wrap .form-control{padding-right:70px}.password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;color:#5473bc;background:transparent;font-size:.78rem;font-weight:700}.icon-button{border:none;border-radius:10px;padding:9px 12px;background:#f3f5fa;color:#3152a1}.nav-backdrop{display:none}.brand-lockup:hover{color:#fff}
+/* CRUD controls and account states */
+.status-pill.suspended{background:#fff0ef;color:#ad3e46}
+.table-clean td .inline-actions{flex-wrap:wrap;min-width:170px}
+.table-clean td .inline-actions form{margin:0}
+.table-clean td .stack{max-height:none;overflow:visible;gap:6px}
+.table-clean td .stack form{margin:0}
+.table-clean td select.form-select-sm{min-width:140px}
+@media(max-width:640px){.table-clean td .inline-actions{min-width:0}.table-clean td select.form-select-sm{min-width:110px}}

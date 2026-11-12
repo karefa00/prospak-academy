@@ -1,0 +1,12 @@
+/.env
+/.idea/
+/.vscode/
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+/storage/sessions/*
+/storage/private-uploads/*
+/database/backups/*
+/public/uploads/*
+!/public/uploads/.htaccess
+.DS_Store

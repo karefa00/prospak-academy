@@ -1,0 +1,38 @@
+<?php
+declare(strict_types=1);
+// Deliberately NO autoloaders, Composer or reloader scripts.
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/error-handler.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../src/Helpers/functions.php';
+require_once __DIR__ . '/../src/Helpers/View.php';
+require_once __DIR__ . '/../src/Validators/Input.php';
+require_once __DIR__ . '/../src/Validators/CourseValidator.php';
+require_once __DIR__ . '/../src/Validators/AcademicValidator.php';
+require_once __DIR__ . '/../src/Models/User.php';
+require_once __DIR__ . '/../src/Models/Student.php';
+require_once __DIR__ . '/../src/Models/Course.php';
+require_once __DIR__ . '/../src/Models/Enrollment.php';
+require_once __DIR__ . '/../src/Repositories/UserRepository.php';
+require_once __DIR__ . '/../src/Repositories/StudentRepository.php';
+require_once __DIR__ . '/../src/Repositories/CourseRepository.php';
+require_once __DIR__ . '/../src/Repositories/EnrollmentRepository.php';
+require_once __DIR__ . '/../src/Services/AuthService.php';
+require_once __DIR__ . '/../src/Services/EnrollmentService.php';
+require_once __DIR__ . '/../src/Services/GradeService.php';
+require_once __DIR__ . '/../src/Middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../src/Middleware/RoleMiddleware.php';
+require_once __DIR__ . '/../src/Middleware/CsrfMiddleware.php';
+require_once __DIR__ . '/../src/Controllers/AuthController.php';
+require_once __DIR__ . '/../src/Controllers/DashboardController.php';
+require_once __DIR__ . '/../src/Controllers/StudentController.php';
+require_once __DIR__ . '/../src/Controllers/CourseController.php';
+require_once __DIR__ . '/../src/Controllers/EnrollmentController.php';
+require_once __DIR__ . '/../src/Controllers/UserController.php';
+require_once __DIR__ . '/../src/Controllers/AcademicController.php';
+require_once __DIR__ . '/../src/Controllers/GradeController.php';
+require_once __DIR__ . '/../api/responses/JsonResponse.php';
+date_default_timezone_set('UTC');
+start_app_session();

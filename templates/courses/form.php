@@ -1,0 +1,11 @@
+<div class="page-header"><div><p class="eyebrow">COURSE MANAGEMENT</p><h1>Create course</h1><p>Add a course to the catalogue with programme and level eligibility.</p></div><a href="/courses" class="btn btn-outline-secondary">Back</a></div>
+<section class="panel"><form method="post" action="/courses/create" data-validate><?= csrf_field() ?><div class="form-grid">
+<label class="form-label">Course code<input class="form-control" name="code" maxlength="20" placeholder="SWE101" required></label>
+<label class="form-label">Course title<input class="form-control" name="title" maxlength="200" required></label>
+<label class="form-label">Credit units<input class="form-control" type="number" name="credit_units" min="1" max="99" required></label>
+<label class="form-label">Semester<select class="form-select" name="semester_number" required><option value="1">First semester</option><option value="2">Second semester</option></select></label>
+<label class="form-label">Department<select class="form-select" name="department_id" data-department required><option value="">Choose department</option><?php foreach($departments as $r):?><option value="<?= (int)$r['id'] ?>"><?= e($r['name']) ?></option><?php endforeach; ?></select></label>
+<label class="form-label">Programme<select class="form-select" name="programme_id" data-programme required><option value="">Choose programme</option><?php foreach($programmes as $r):?><option value="<?= (int)$r['id'] ?>" data-department-id="<?= (int)$r['department_id'] ?>"><?= e($r['name']) ?></option><?php endforeach; ?></select></label>
+<label class="form-label">Academic level<select class="form-select" name="academic_level_id" required><option value="">Choose level</option><?php foreach($levels as $r):?><option value="<?= (int)$r['id'] ?>"><?= e($r['name']) ?></option><?php endforeach; ?></select></label>
+<label class="form-label">Prerequisite course (optional)<select class="form-select" name="prerequisite_id"><option value="">None</option><?php foreach($prerequisites as $r):?><option value="<?= (int)$r['id'] ?>"><?= e($r['code'].' · '.$r['title']) ?></option><?php endforeach; ?></select></label>
+</div><button class="btn btn-primary mt-3">Save course</button></form></section>
